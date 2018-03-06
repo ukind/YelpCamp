@@ -1,12 +1,19 @@
 var express = require('express');
 var request = require('request');
-let dataArray = [];
+var bodyParser = require('body-parser');
 
-var app = express();
+let dataArray = [];
+// let registeredCamper = {
+//   name: {first: '', last: ''},
+//   picture: {large: ''}
+// };
 
 var camper = 'https://randomuser.me/api/?results=20';
 
-app.use(express.static(__dirname + '/public'));
+var app = express();
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(express.static('/public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -18,14 +25,28 @@ app.get('/camper', function(req, res) {
   request(camper, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       const Data = JSON.parse(body);
-
-      res.render('camper', {camperHTML: Data.results});
+      Data.results.forEach(elemen => {
+        dataArray.push(elemen);
+      });
+      res.render('camper', {camperHTML: dataArray});
     }
   });
 });
 
 app.post('/camper', function(req, res) {
+  const camperNameFirst = req.body.camperNameFirst;
+  const camperNameLast = req.body.camperNameLast;
+  const imageUrl = req.body.camperImage;
+  const registeredCamper = {};
+  registeredCamper.name = {first: camperNameFirst, last: camperNameLast};
+  registeredCamper.picture = {large: imageUrl || ''};
+  dataArray.unshift(registeredCamper);
+  res.redirect('/camper');
 
+});
+
+app.get('/camper/new', function(req, res) {
+  res.render('new');
 });
 
 app.get('*', (req, res) => {
