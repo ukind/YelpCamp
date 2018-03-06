@@ -1,34 +1,43 @@
-<html>
-
-  <head>
-    <meta charset="utf-8">
-    <title>Camper</title>
-  </head>
-
-  <body>
-    <a href="/camper/new">Add new Camper </a>
-    <div class="camper">
+<% include partials/header %>
 
 
+
+
+  <div class="container">
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Our Camper</h1>
+        <p>This is our camping squad!</p>
+        <a class="btn btn-primary" href="/camper/new">I wanna in!</a>
+      </div>
     </div>
+        <div class="camperContainer row"></div>
+
 
     <script type="text/javascript">
-      const div = document.querySelector('.camper');
+      const divCamper = document.querySelector('.camperContainer');
       const camper = <%-JSON.stringify(camperHTML) %>
       console.log(camper);
 
-      camper.forEach(element => {
-        const nodeli = document.createElement('li');
+      camper.forEach((element, index) => {
+
         const firstName = element.name.first.charAt(0).toUpperCase() + element.name.first.slice(1);
         const lastName = element.name.last.charAt(0).toUpperCase() + element.name.last.slice(1);
-        const imageProfil = document.createElement('img');
-        imageProfil.src = element.picture.large;
-        nodeli.innerHTML = `${firstName} ${lastName} <br />`;
-        nodeli.appendChild(imageProfil);
-        div.appendChild(nodeli);
+        divCamper.innerHTML += `
+        <div class="col-md-4 col-sm-4">
+        <div class="camperUser">
+        <figure class="figure">
+          <img src="${element.picture.large}" class="figure-img img-fluid rounded">
+          <figcaption class="figure-caption text-center">${firstName} ${lastName}
+          </figcaption>
+        </figure>
+        </div>
+        </div>
+        `;
       })
-
     </script>
-  </body>
+  </div>
 
-</html>
+
+
+  <% include partials/footer %>

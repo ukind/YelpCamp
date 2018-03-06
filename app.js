@@ -2,6 +2,9 @@ var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 
+const bootstrapJS = '/node_modules/bootstrap/dist/js';
+const bootstrapCSS = '/node_modules/bootstrap/dist/css';
+
 let dataArray = [];
 // let registeredCamper = {
 //   name: {first: '', last: ''},
@@ -12,8 +15,10 @@ var camper = 'https://randomuser.me/api/?results=20';
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
+app.use('/user', express.static(__dirname + '/public'));
+app.use('/vendor', express.static(__dirname + bootstrapJS));
+app.use('/vendor', express.static(__dirname + bootstrapCSS));
 
-app.use(express.static('/public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -24,10 +29,12 @@ app.get('/camper', function(req, res) {
 
   request(camper, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      const Data = JSON.parse(body);
-      Data.results.forEach(elemen => {
-        dataArray.push(elemen);
-      });
+      if (dataArray.length === 0) {
+        const Data = JSON.parse(body);
+        Data.results.forEach(elemen => {
+          dataArray.push(elemen);
+        });
+      }
       res.render('camper', {camperHTML: dataArray});
     }
   });
