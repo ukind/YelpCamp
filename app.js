@@ -1,6 +1,7 @@
 const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const bootstrapJS = '/node_modules/bootstrap/dist/js';
 const bootstrapCSS = '/node_modules/bootstrap/dist/css';
 let db;

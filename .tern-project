@@ -18,6 +18,11 @@
       "dontLoad": "",
       "load": "",
       "modules": ""
+    },
+    "node": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
     }
   }
 }
