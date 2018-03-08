@@ -74,17 +74,18 @@ app.post('/camper', function(req, res) {
   const camperNameFirst = req.body.camperNameFirst;
   const camperNameLast = req.body.camperNameLast;
   const imageUrl = req.body.camperImage;
-  const registeredCamper = {};
+  var empty;
+
   camperDatabase.create({
     name: {first: camperNameFirst, last: camperNameLast},
-    picture: {large: imageUrl || ''},
-    gender: elemen.gender || '',
-    email: elemen.email || '',
+    picture: {large: imageUrl || 'https://pingendo.com/assets/photos/wireframe/photo-1.jpg'},
+    gender: empty || 'Not available',
+    email: empty || 'Not available',
     location: {
-      street: elemen.location.street || '',
-      city: elemen.location.city || '',
-      state: elemen.location.state || '',
-      postcode: elemen.location.postcode || ''
+      street: empty || 'Not available',
+      city: empty || 'Not available',
+      state: empty || 'Not available',
+      postcode: empty || 'Not available'
     }
   }, function(error, result) {
     if (error) {
@@ -92,6 +93,7 @@ app.post('/camper', function(req, res) {
     }
     console.log(result);
   });
+
   res.redirect('/camper');
 
 });
@@ -101,8 +103,14 @@ app.get('/camper/new', function(req, res) {
 });
 
 // show more camper
-app.get('/camper/:name', function(req, res) {
-  res.render('show');
+app.get('/camper/:id', function(req, res) {
+  const camperId = req.params.id;
+  camperDatabase.findById(camperId, function(error, result) {
+    if (error) {
+      console.log(error);
+    }
+    res.render('show', {camperIDHtml: result});
+  });
 });
 
 app.get('*', (req, res) => {

@@ -1,0 +1,41 @@
+<% include partials/header %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 selectedProfil">
+
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    const selectedProfil = document.querySelector('.selectedProfil');
+    const camperID = <%-JSON.stringify(camperIDHtml) %>;
+    console.log(camperID);
+    const firstName = camperID.name.first.charAt(0).toUpperCase() + camperID.name.first.slice(1);
+    const lastName = camperID.name.last.charAt(0).toUpperCase() + camperID.name.last.slice(1);
+    const gender = (camperID.gender.charAt(0).toUpperCase() + camperID.gender.slice(1) || 'Not Available');
+    selectedProfil.innerHTML = `
+    <div class="col-md-12 selectedProfil">
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="w-100 col-8 col-sm-8 col-md-6 col-lg-5 col-xl-5">
+          <div class="card my-3">
+            <img class="card-img-top mx-auto rounded d-flex" src="${camperID.picture.large}" alt="Card image cap">
+            <div class="card-body bg-gradient">
+              <h5 class="card-title text-center">${firstName} ${lastName}</h5>
+              <ul class="">
+                <li>Email: ${camperID.email}</li>
+                <li>Gender: ${gender}</li>
+                <li>Location: </li>
+              </ul>
+              <a class="btn btn-block text-dark text-center text-capitalize border border-light btn-light" href="#">Visit ${firstName} </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    `;
+  </script>
+
+  <% include partials/footer %>
