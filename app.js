@@ -5,7 +5,6 @@ const mongoose      = require('mongoose');
 const bootstrapJS   = '/node_modules/bootstrap/dist/js';
 const bootstrapCSS  = '/node_modules/bootstrap/dist/css';
 
-let dataArray = [];
 var camper    = 'https://randomuser.me/api/?results=20';
 var app       = express();
 
@@ -19,7 +18,15 @@ mongoose.connect('mongodb://localhost/yelpcamp');
 // database schemas
 const camperSchema = new mongoose.Schema({
   name: {first: String, last: String},
-  picture: {large: String}
+  picture: {large: String},
+  gender: String,
+  email: String,
+  location: {
+    street: String,
+    city: String,
+    state: String,
+    postcode: String
+  }
 });
 
 const camperDatabase = mongoose.model('camper', camperSchema);
@@ -38,17 +45,29 @@ app.get('/camper', function(req, res) {
           Data.results.forEach(elemen => {
             camperDatabase.create({
               name: {first: elemen.name.first, last: elemen.name.last},
-              picture: {large: elemen.picture.large}
+              picture: {large: elemen.picture.large},
+              gender: elemen.gender,
+              email: elemen.email,
+              location: {
+                street: elemen.location.street,
+                city: elemen.location.city,
+                state: elemen.location.state,
+                postcode: elemen.location.postcode
+              }
             });
           });
         }
-        // show data from database
-        camperDatabase.find({}, function(error, data) {
-          res.render('camper', {camperHTML: data});
-        });
+      });
+      camperDatabase.count({}, function(error, count) {
+        if (count >= 0) {
+          camperDatabase.find({}, function(error, data) {
+              res.render('camper', {camperHTML: data});
+            });
+        }
       });
     }
   });
+
 });
 
 app.post('/camper', function(req, res) {
@@ -56,12 +75,17 @@ app.post('/camper', function(req, res) {
   const camperNameLast = req.body.camperNameLast;
   const imageUrl = req.body.camperImage;
   const registeredCamper = {};
-  // registeredCamper.name = {first: camperNameFirst, last: camperNameLast};
-  // registeredCamper.picture = {large: imageUrl || ''};
-  // dataArray.unshift(registeredCamper);
   camperDatabase.create({
     name: {first: camperNameFirst, last: camperNameLast},
-    picture: {large: imageUrl || ''}
+    picture: {large: imageUrl || ''},
+    gender: elemen.gender || '',
+    email: elemen.email || '',
+    location: {
+      street: elemen.location.street || '',
+      city: elemen.location.city || '',
+      state: elemen.location.state || '',
+      postcode: elemen.location.postcode || ''
+    }
   }, function(error, result) {
     if (error) {
       console.log(error);
@@ -74,6 +98,11 @@ app.post('/camper', function(req, res) {
 
 app.get('/camper/new', function(req, res) {
   res.render('new');
+});
+
+// show more camper
+app.get('/camper/:name', function(req, res) {
+  res.render('show');
 });
 
 app.get('*', (req, res) => {
