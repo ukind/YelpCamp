@@ -10,10 +10,11 @@
   <script type="text/javascript">
     const selectedProfil = document.querySelector('.selectedProfil');
     const camperID = <%-JSON.stringify(camperIDHtml) %>;
-    console.log(camperID);
+    console.log(camperID.comments[0].text);
     const firstName = camperID.name.first.charAt(0).toUpperCase() + camperID.name.first.slice(1);
     const lastName = camperID.name.last.charAt(0).toUpperCase() + camperID.name.last.slice(1);
-    const gender = (camperID.gender.charAt(0).toUpperCase() + camperID.gender.slice(1) || 'Not Available');
+
+    const gender = 'Not Available' || camperID.gender.charAt(0).toUpperCase() + camperID.gender.slice(1);
     selectedProfil.innerHTML = `
     <div class="col-md-12 selectedProfil">
     <div class="container">
@@ -24,9 +25,10 @@
             <div class="card-body bg-gradient">
               <h5 class="card-title text-center">${firstName} ${lastName}</h5>
               <ul class="">
-                <li>Email: ${camperID.email}</li>
-                <li>Gender: ${gender}</li>
+                <li>Email: ${camperID.email || 'Not Available'}</li>
+                <li>Gender: ${gender || 'Not Available'} </li>
                 <li>Location: </li>
+                <li>Comment: ${camperID.comments[0].text}</li>
               </ul>
               <a class="btn btn-block text-dark text-center text-capitalize border border-light btn-light" href="#">Visit ${firstName} </a>
             </div>
