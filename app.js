@@ -5,7 +5,7 @@ const mongoose      = require('mongoose');
 const bootstrapJS   = '/node_modules/bootstrap/dist/js';
 const bootstrapCSS  = '/node_modules/bootstrap/dist/css';
 
-var camper    = 'https://randomuser.me/api/?results=20';
+
 var app       = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
