@@ -11,6 +11,22 @@
   text-align: center;
 }
 
+footer {
+  bottom: 0;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+.addComment{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 130px;
+  float: right;
+  margin-bottom: 10vw;
+}
+
 
 /*!
 * Based on Bootstrap v4.0.0 (https://getbootstrap.com)
