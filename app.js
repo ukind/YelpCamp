@@ -7,6 +7,8 @@ const bootstrapCSS  = '/node_modules/bootstrap/dist/css';
 const CamperInterface = require('./models/camperDatabaseInterface');
 const GetCamperFromDatabaseJSON = require('./models/seedDBJSON');
 const SeedDB = require('./models/seedDB');
+const comment = require('./models/comments');
+const camperCounter = require('./models/camperCounter');
 
 var app       = express();
 
@@ -17,18 +19,32 @@ app.use('/vendor', express.static(__dirname + bootstrapCSS));
 app.set('view engine', 'ejs');
 mongoose.connect('mongodb://localhost/yelpcamp');
 
+// CAMPER COUNTER -------------------
+
+let sumCamper;
+function calculateCamper() {
+  var camperSum = Promise.resolve(camperCounter).then(value => {
+    sumCamper = value;
+  });
+};
+
+// CAMPER COUNTER -------------------
+
 app.get('/', (req, res) => {
-  res.render('landing');
+  res.render('./camper/landing');
 });
 
 app.get('/camper', function(req, res) {
   // GetCamperFromDatabaseJSON();
-  SeedDB.removeAllCamper();
-  SeedDB.camperCreator();
+  // SeedDB.removeAllCamper();
+  //
+  // SeedDB.camperCreator();
+  calculateCamper();
   CamperInterface.count({}, function(error, count) {
     if (count >= 0) {
       CamperInterface.find({}, function(error, data) {
-          res.render('camper', {camperHTML: data});
+          calculateCamper();
+          res.render('./camper/camper', {camperHTML: data, camperCounterHTML: sumCamper});
         });
     }
   });
@@ -65,7 +81,8 @@ app.post('/camper', function(req, res) {
 });
 
 app.get('/camper/new', function(req, res) {
-  res.render('new');
+  calculateCamper();
+  res.render('./camper/new', {camperCounterHTML: sumCamper});
 });
 
 // show more camper
@@ -77,8 +94,39 @@ app.get('/camper/:id', function(req, res) {
       if (error) {
         console.log(error);
       }
-      res.render('show', {camperIDHtml: result});
+      calculateCamper();
+      res.render('./camper/show', {camperIDHtml: result, camperCounterHTML: sumCamper});
     });
+});
+
+// =================================
+// COMMENTS ROUTE
+// =================================
+
+app.get('/camper/:id/comments/new', (req, res) => {
+  const camperID = req.params.id;
+  CamperInterface.findById(camperID, function(err, result) {
+    calculateCamper();
+    res.render('./comment/new', {camperComment: result, camperCounterHTML: sumCamper});
+  });
+
+});
+
+app.post('/camper/:id/comment', (req, res) => {
+  const camperID = req.params.id;
+  console.log(camperID);
+  CamperInterface.findById(camperID, (error, camper) => {
+    if (error) {
+      console.log(error);
+      res.redirect('/camper');
+    }
+    const commentContainer = req.body.comment;
+    comment.create(commentContainer, (error, result) => {
+      camper.comments.push(result);
+      camper.save();
+      res.redirect('/camper/' + camper._id);
+    });
+  });
 });
 
 app.get('*', (req, res) => {

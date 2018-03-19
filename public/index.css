@@ -21,12 +21,12 @@ footer {
 .addComment{
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
-  width: 130px;
-  float: right;
   margin-bottom: 10vw;
 }
 
+.showContainer{
+  margin-top: 5vw;
+}
 
 /*!
 * Based on Bootstrap v4.0.0 (https://getbootstrap.com)
