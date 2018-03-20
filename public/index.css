@@ -25,9 +25,21 @@ footer {
 }
 
 .showContainer{
-  margin-top: 5vw;
+  margin-top: 3vw;
 }
 
+.menu{
+  margin-bottom: 5vh;
+}
+
+.biodata{
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
+.comment-button{
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
 /*!
 * Based on Bootstrap v4.0.0 (https://getbootstrap.com)
 */

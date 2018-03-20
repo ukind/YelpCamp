@@ -6,25 +6,24 @@
     <title>Camper</title>
     <link rel="stylesheet" href="/vendor/bootstrap.css">
     <link rel="stylesheet" href="/user/index.css">
-    <nav class="navbar navbar-expand-md navbar-dark sticky-top bg-primary text-right">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Camper</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="true" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-        <div class="navbar-collapse text-center justify-content-end collapse show" id="navbar2SupportedContent" style="">
-          <a href="/camper/new" class="btn btn-default navbar-btn btn-secondary text-right">
-            <i class="fa fa-user fa-fw"></i>
-            Add Camper
-            <span class="badge badge-pill badge-primary countedCamper">4
-            </span></a>
-        </div>
-      </div>
-    </nav>
-    <script type="text/javascript">
-      const camperCounterHTML = <%-JSON.stringify(camperCounterHTML) %>
-      console.log(camperCounterHTML[0]);
-      const camperCounter = document.querySelector('.countedCamper');
-      camperCounter.innerHTML = `${camperCounterHTML}`;
-    </script>
   </head>
 
   <body>
+    <nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Camper</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="true" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+      <div class="navbar-collapse text-center justify-content-end collapse show" id="navbar2SupportedContent" style="">
+        <a class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Register
+          <br>
+        </a>
+        <a class="btn btn-default navbar-btn">Sign in&nbsp;<span class="badge badge-pill badge-light w-50 mx-0 camper">4</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <script type="text/javascript">
+    const camperTotal = document.querySelector('.camper');
+    let total = <%-JSON.stringify(camperCounterHTML) %>
+    camperTotal.innerHTML = total;
+  </script>

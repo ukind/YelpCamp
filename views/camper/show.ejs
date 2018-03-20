@@ -1,25 +1,19 @@
 <% include ../partials/header %>
   <div class="container">
     <div class="row showContainer">
-      <div class="col-md-3 menu">
-
-      </div>
       <div class="col-md-9 selectedProfil">
-
       </div>
 
 
-
-
+    <div class="col-md-3 menu"></div>
     </div>
-    <div class="comments">
-    </div>
-    <div class="addComment">
+    <div class="addComment"></div>
+    <div class="comments"></div>
 
-    </div>
   </div>
 
   <script type="text/javascript">
+    const bioData = document.querySelector('.biodata')
     const menu = document.querySelector('.menu');
     const selectedProfil = document.querySelector('.selectedProfil');
     const comments = document.querySelector('.comments');
@@ -30,7 +24,7 @@
     const lastName = camperID.name.last.charAt(0).toUpperCase() + camperID.name.last.slice(1);
 
     const gender = 'Not Available' || camperID.gender.charAt(0).toUpperCase() + camperID.gender.slice(1);
-    selectedProfil.innerHTML =
+    selectedProfil.innerHTML +=
       `
       <div class="row d-flex justify-content-center">
       <div class="col-md-5 col-7 col-lg-6 d-flex flex-column align-items-center align-self-center justify-content-center">
@@ -62,29 +56,12 @@
       </div>
     </div>
     `;
-    camperID.comments.forEach((elemen, index) => {
-      comments.innerHTML +=
-        `
-      <div class="row w-75 mx-auto">
-          <div class="text-right col-md-12">
-            <h3 class="">${elemen.text}</h3>
-          </div>
-          <div class="col-md-12">
-            <p class="text-right text-uppercase"> - ${elemen.author}</p>
-          </div>
-        </div>
-      `;
-    });
 
-    buttonComment.innerHTML = `
-      <div class="row mx-auto w-75">
-        <div class="text-right col-md-12">
-          <a class="btn btn-primary" href="./${camperID._id}/comments/new/">Add comments...</a>
-        </div>
-      </div>
-    `;
 
-    menu.innerHTML = `
+
+
+    menu.innerHTML =
+      `
     <ul class="list-group">
       <li class="list-group-item d-flex justify-content-between align-items-center">
         Comments
@@ -101,6 +78,32 @@
     </ul>
 
     `;
+
+    selectedProfil.innerHTML += `
+    <p class="biodata">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    `;
+
+    selectedProfil.innerHTML += `
+      <div class="row mx-auto w-100 comment-button">
+        <div class="text-right col-md-12">
+          <a class="btn btn-primary" href="./${camperID._id}/comments/new/">Add comments...</a>
+        </div>
+      </div>
+    `;
+
+    camperID.comments.forEach((elemen, index) => {
+      selectedProfil.innerHTML +=
+        `
+      <div class="row w-100 mx-auto" data-comment=${index}>
+          <div class="text-left col-md-12 comment-content">
+            <h3 class="">${elemen.text}</h3>
+          </div>
+          <div class="col-md-12 comment-author">
+            <p class="text-right text-uppercase"> - ${elemen.author}</p>
+          </div>
+        </div>
+      `;
+    });
 
   </script>
 

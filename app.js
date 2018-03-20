@@ -2,16 +2,21 @@ const express       = require('express');
 const request       = require('request');
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
-const bootstrapJS   = '/node_modules/bootstrap/dist/js';
-const bootstrapCSS  = '/node_modules/bootstrap/dist/css';
+const passport      = require('passport');
+const localStrategy = require('passport-local');
+
+// CUSTOM REQUIRE
 const CamperInterface = require('./models/camperDatabaseInterface');
 const GetCamperFromDatabaseJSON = require('./models/seedDBJSON');
 const SeedDB = require('./models/seedDB');
 const comment = require('./models/comments');
 const camperCounter = require('./models/camperCounter');
+const UserCollection = require('./models/user');
+const bootstrapJS   = '/node_modules/bootstrap/dist/js';
+const bootstrapCSS  = '/node_modules/bootstrap/dist/css';
 
 var app       = express();
-
+// EXPRESS USES
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/user', express.static(__dirname + '/public'));
 app.use('/vendor', express.static(__dirname + bootstrapJS));
@@ -19,7 +24,7 @@ app.use('/vendor', express.static(__dirname + bootstrapCSS));
 app.set('view engine', 'ejs');
 mongoose.connect('mongodb://localhost/yelpcamp');
 
-// CAMPER COUNTER -------------------
+// CAMPER FUNCTION COUNTER -------------------
 
 let sumCamper;
 function calculateCamper() {
@@ -28,12 +33,13 @@ function calculateCamper() {
   });
 };
 
-// CAMPER COUNTER -------------------
+// ROUTES
 
 app.get('/', (req, res) => {
   res.render('./camper/landing');
 });
 
+// ROUTE: CAMPER
 app.get('/camper', function(req, res) {
   // GetCamperFromDatabaseJSON();
   // SeedDB.removeAllCamper();
@@ -51,7 +57,7 @@ app.get('/camper', function(req, res) {
 
 });
 
-// creating new camper
+// ROUTES: NEW CAMPER
 app.post('/camper', function(req, res) {
   const camperNameFirst = req.body.camperNameFirst;
   const camperNameLast = req.body.camperNameLast;
@@ -80,12 +86,13 @@ app.post('/camper', function(req, res) {
 
 });
 
+// ROUTE: GET FORM
 app.get('/camper/new', function(req, res) {
   calculateCamper();
   res.render('./camper/new', {camperCounterHTML: sumCamper});
 });
 
-// show more camper
+// ROUTE: GET CAMPER DETAIL
 app.get('/camper/:id', function(req, res) {
   const camperId = req.params.id;
   CamperInterface.findById(camperId)
@@ -99,10 +106,7 @@ app.get('/camper/:id', function(req, res) {
     });
 });
 
-// =================================
-// COMMENTS ROUTE
-// =================================
-
+// ROUTE: GET COMMENT CAMPER
 app.get('/camper/:id/comments/new', (req, res) => {
   const camperID = req.params.id;
   CamperInterface.findById(camperID, function(err, result) {
@@ -112,6 +116,7 @@ app.get('/camper/:id/comments/new', (req, res) => {
 
 });
 
+// ROUTE: NEW COMMENT CAMPER
 app.post('/camper/:id/comment', (req, res) => {
   const camperID = req.params.id;
   console.log(camperID);
@@ -133,7 +138,7 @@ app.get('*', (req, res) => {
   res.send('page not found');
 });
 
-app.listen(12345, process.env.IP, () => {
+app.listen(12345, '127.0.0.1', () => {
   // clearing console
   console.log('\x1Bc');
   console.log('server started');
