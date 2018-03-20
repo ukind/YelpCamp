@@ -12,8 +12,9 @@
 }
 
 footer {
+  margin-top: 20vh;
   bottom: 0;
-  position: fixed;
+  position: relative;
   text-align: center;
   width: 100%;
 }
@@ -40,6 +41,21 @@ footer {
   margin-top: 3vh;
   margin-bottom: 3vh;
 }
+
+.formRegister{
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 5vh;
+}
+
+.camperContainer{
+  min-height: 15vh;
+}
+
 /*!
 * Based on Bootstrap v4.0.0 (https://getbootstrap.com)
 */

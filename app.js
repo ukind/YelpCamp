@@ -11,11 +11,12 @@ const GetCamperFromDatabaseJSON = require('./models/seedDBJSON');
 const SeedDB = require('./models/seedDB');
 const comment = require('./models/comments');
 const camperCounter = require('./models/camperCounter');
-const UserCollection = require('./models/user');
-const bootstrapJS   = '/node_modules/bootstrap/dist/js';
-const bootstrapCSS  = '/node_modules/bootstrap/dist/css';
+const camperCollection = require('./models/user');
+const bootstrapJS   = './node_modules/bootstrap/dist/js';
+const bootstrapCSS  = './node_modules/bootstrap/dist/css';
 
 var app       = express();
+
 // EXPRESS USES
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/user', express.static(__dirname + '/public'));
@@ -24,8 +25,19 @@ app.use('/vendor', express.static(__dirname + bootstrapCSS));
 app.set('view engine', 'ejs');
 mongoose.connect('mongodb://localhost/yelpcamp');
 
-// CAMPER FUNCTION COUNTER -------------------
+// AUTHENTIFICATION function
+app.use(require('express-session')({
+  secret: 'test',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(camperCollection.authenticate()));
+passport.serializeUser(camperCollection.serializeUser());
+passport.deserializeUser(camperCollection.deserializeUser());
 
+// CAMPER FUNCTION COUNTER
 let sumCamper;
 function calculateCamper() {
   var camperSum = Promise.resolve(camperCounter).then(value => {
@@ -36,11 +48,11 @@ function calculateCamper() {
 // ROUTES
 
 app.get('/', (req, res) => {
-  res.render('./camper/landing');
+  res.redirect('/camper');
 });
 
 // ROUTE: CAMPER
-app.get('/camper', function(req, res) {
+app.get('/camper',  function(req, res) {
   // GetCamperFromDatabaseJSON();
   // SeedDB.removeAllCamper();
   //
@@ -59,31 +71,38 @@ app.get('/camper', function(req, res) {
 
 // ROUTES: NEW CAMPER
 app.post('/camper', function(req, res) {
-  const camperNameFirst = req.body.camperNameFirst;
-  const camperNameLast = req.body.camperNameLast;
-  const imageUrl = req.body.camperImage;
+  const newUser = new camperCollection({username: req.body.username});
+  const password = req.body.password;
+  const camperNameFirst = req.body.firstName;
+  const camperNameLast = req.body.lastName;
+  const imageUrl = req.body.imageURL;
   var empty;
-
-  CamperInterface.create({
-    name: {first: camperNameFirst, last: camperNameLast},
-    picture: {large: imageUrl || 'https://pingendo.com/assets/photos/wireframe/photo-1.jpg'},
-    gender: empty || 'Not available',
-    email: empty || 'Not available',
-    location: {
-      street: empty || 'Not available',
-      city: empty || 'Not available',
-      state: empty || 'Not available',
-      postcode: empty || 'Not available'
-    }
-  }, function(error, result) {
+  camperCollection.register(newUser, password, (error, user) => {
     if (error) {
       console.log(error);
+      return res.render('./camper/register');
     }
-    console.log(result);
+    passport.authenticate('local')(req, res, () => {
+      // console.log(res);
+      CamperInterface.create({
+        name: {first: camperNameFirst, last: camperNameLast},
+        picture: {large: imageUrl || 'https://pingendo.com/assets/photos/wireframe/photo-1.jpg'},
+        gender: empty || 'Not available',
+        email: empty || 'Not available',
+        location: {
+          street: empty || 'Not available',
+          city: empty || 'Not available',
+          state: empty || 'Not available',
+          postcode: empty || 'Not available'
+        }
+      }, function(error, result) {
+        if (error) {
+          console.log(error);
+        }
+        res.redirect('/camper');
+      });
+    });
   });
-
-  res.redirect('/camper');
-
 });
 
 // ROUTE: GET FORM
@@ -93,7 +112,7 @@ app.get('/camper/new', function(req, res) {
 });
 
 // ROUTE: GET CAMPER DETAIL
-app.get('/camper/:id', function(req, res) {
+app.get('/camper/:id', isLoggedIn, function(req, res) {
   const camperId = req.params.id;
   CamperInterface.findById(camperId)
     .populate('comments') //joining data from comments collection
@@ -119,7 +138,6 @@ app.get('/camper/:id/comments/new', (req, res) => {
 // ROUTE: NEW COMMENT CAMPER
 app.post('/camper/:id/comment', (req, res) => {
   const camperID = req.params.id;
-  console.log(camperID);
   CamperInterface.findById(camperID, (error, camper) => {
     if (error) {
       console.log(error);
@@ -133,6 +151,50 @@ app.post('/camper/:id/comment', (req, res) => {
     });
   });
 });
+
+// ROUTE: REGISTER
+// app.get('/register', (req, res) => {
+//   calculateCamper();
+//   res.render('./camper/register', {camperCounterHTML: sumCamper});
+// });
+//
+// app.post('/register', (req, res) => {
+//   const newUser = new camperCollection({username: req.body.username});
+//   const password = req.body.password;
+//   camperCollection.register(newUser, password, (error, user) => {
+//     if (error) {
+//       console.log(error);
+//       return res.render('./camper/register');
+//     }
+//     passport.authenticate('local')(req, res, () => {
+//       res.redirect('./camper');
+//     });
+//   });
+// });
+
+// ROUTE : LOGIN
+
+app.get('/login', (req, res) => {
+  calculateCamper();
+  res.render('./camper/login', {camperCounterHTML: sumCamper});
+});
+
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/camper',
+  failureRedirect: '/login'
+}), (req, res) => {
+
+});
+
+// FUNCION: detect session
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+
 
 app.get('*', (req, res) => {
   res.send('page not found');

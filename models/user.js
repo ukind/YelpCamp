@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 
-const UserSchema = new mongoose.Schema({
+const camperLogin = new mongoose.Schema({
   username: String,
   password: String
 });
 
-UserSchema.plugin(passportLocalMongoose);
+camperLogin.plugin(passportLocalMongoose);
 
-const userCollection = mongoose.model('Member', UserSchema);
-module.exports = userCollection;
+const camperLoginCollection = mongoose.model('CamperLogin', camperLogin);
+module.exports = camperLoginCollection;

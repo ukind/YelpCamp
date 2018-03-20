@@ -1,10 +1,37 @@
-<%include ../partials/header %>
-    <h1>Register New Camper</h1>
+<% include ../partials/header %>
+  <div class="container">
 
-    <form class="" action="/camper" method="post">
-      <input type="text" name="camperNameFirst" value="" placeholder="Camper Name"><br />
-      <input type="text" name="camperNameLast" value="" placeholder="Camper Name"><br />
-      <input type="text" name="camperImage" value="" placeholder="Image Url"><br />
-      <button type="submit" name="button">Register</button>
-    </form>
-<%include ../partials/footer %>
+    <div class="row formRegister">
+      <div class="col-md-6">
+        <h1><center>
+          Register
+        </center></h1>
+        <form action="/camper" method="post">
+          <fieldset class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="Password" placeholder="Password" name="password">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="FirstName">First Name</label>
+            <input type="text" class="form-control" id="FirstName" placeholder="First Name" name="firstName">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="LastName">Last Name</label>
+            <input type="text" class="form-control" id="LastName" placeholder="Last Name" name="lastName">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="LastName">Image URL</label>
+            <input type="text" class="form-control" id="LastName" placeholder="http://a.jpg" name="imageURL">
+          </fieldset>
+          <button type="submit" class="btn btn-primary" style="float: right; margin-top: 2vh">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <% include ../partials/footer %>
