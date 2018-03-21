@@ -45,6 +45,22 @@ function calculateCamper() {
   });
 };
 
+// PASSING VARIABLE GLOBALLY IN EPRESS TO EJS
+app.use(function(req, res, next) {
+  res.locals.camperCounterHTML = sumCamper;
+  next();
+});
+
+
+app.use(function(req, res, next) {
+    if (typeof req.user == 'undefined') {
+      res.locals.loggedUser = null;
+      return next();
+    }
+    res.locals.loggedUser = req.user;
+    next();
+  });
+
 // ROUTES
 
 app.get('/', (req, res) => {
@@ -55,14 +71,14 @@ app.get('/', (req, res) => {
 app.get('/camper',  function(req, res) {
   // GetCamperFromDatabaseJSON();
   // SeedDB.removeAllCamper();
-  //
   // SeedDB.camperCreator();
+  console.log(req.user);
   calculateCamper();
   CamperInterface.count({}, function(error, count) {
     if (count >= 0) {
       CamperInterface.find({}, function(error, data) {
           calculateCamper();
-          res.render('./camper/camper', {camperHTML: data, camperCounterHTML: sumCamper});
+          res.render('./camper/camper', {camperHTML: data});
         });
     }
   });
@@ -112,7 +128,7 @@ app.get('/camper/new', function(req, res) {
 });
 
 // ROUTE: GET CAMPER DETAIL
-app.get('/camper/:id', isLoggedIn, function(req, res) {
+app.get('/camper/:id', function(req, res) {
   const camperId = req.params.id;
   CamperInterface.findById(camperId)
     .populate('comments') //joining data from comments collection
@@ -121,22 +137,22 @@ app.get('/camper/:id', isLoggedIn, function(req, res) {
         console.log(error);
       }
       calculateCamper();
-      res.render('./camper/show', {camperIDHtml: result, camperCounterHTML: sumCamper});
+      res.render('./camper/show', {camperIDHtml: result});
     });
 });
 
 // ROUTE: GET COMMENT CAMPER
-app.get('/camper/:id/comments/new', (req, res) => {
+app.get('/camper/:id/comments/new', isLoggedIn, (req, res) => {
   const camperID = req.params.id;
   CamperInterface.findById(camperID, function(err, result) {
     calculateCamper();
-    res.render('./comment/new', {camperComment: result, camperCounterHTML: sumCamper});
+    res.render('./comment/new', {camperComment: result});
   });
 
 });
 
 // ROUTE: NEW COMMENT CAMPER
-app.post('/camper/:id/comment', (req, res) => {
+app.post('/camper/:id/comment', isLoggedIn, (req, res) => {
   const camperID = req.params.id;
   CamperInterface.findById(camperID, (error, camper) => {
     if (error) {
@@ -176,7 +192,7 @@ app.post('/camper/:id/comment', (req, res) => {
 
 app.get('/login', (req, res) => {
   calculateCamper();
-  res.render('./camper/login', {camperCounterHTML: sumCamper});
+  res.render('./camper/login');
 });
 
 app.post('/login', passport.authenticate('local', {
@@ -195,6 +211,12 @@ function isLoggedIn(req, res, next) {
 }
 
 
+
+// ROUTE: LOGOUT
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/camper');
+});
 
 app.get('*', (req, res) => {
   res.send('page not found');
