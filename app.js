@@ -38,6 +38,7 @@ passport.serializeUser(camperCollection.serializeUser());
 passport.deserializeUser(camperCollection.deserializeUser());
 
 // CAMPER FUNCTION COUNTER
+
 let sumCamper;
 function calculateCamper() {
   var camperSum = Promise.resolve(camperCounter).then(value => {
@@ -47,6 +48,7 @@ function calculateCamper() {
 
 // PASSING VARIABLE GLOBALLY IN EPRESS TO EJS
 app.use(function(req, res, next) {
+  calculateCamper();
   res.locals.camperCounterHTML = sumCamper;
   next();
 });
@@ -73,11 +75,11 @@ app.get('/camper',  function(req, res) {
   // SeedDB.removeAllCamper();
   // SeedDB.camperCreator();
   console.log(req.user);
-  calculateCamper();
+
   CamperInterface.count({}, function(error, count) {
     if (count >= 0) {
       CamperInterface.find({}, function(error, data) {
-          calculateCamper();
+
           res.render('./camper/camper', {camperHTML: data});
         });
     }
@@ -123,7 +125,7 @@ app.post('/camper', function(req, res) {
 
 // ROUTE: GET FORM
 app.get('/camper/new', function(req, res) {
-  calculateCamper();
+
   res.render('./camper/new', {camperCounterHTML: sumCamper});
 });
 
@@ -136,7 +138,7 @@ app.get('/camper/:id', function(req, res) {
       if (error) {
         console.log(error);
       }
-      calculateCamper();
+
       res.render('./camper/show', {camperIDHtml: result});
     });
 });
@@ -145,7 +147,7 @@ app.get('/camper/:id', function(req, res) {
 app.get('/camper/:id/comments/new', isLoggedIn, (req, res) => {
   const camperID = req.params.id;
   CamperInterface.findById(camperID, function(err, result) {
-    calculateCamper();
+
     res.render('./comment/new', {camperComment: result});
   });
 

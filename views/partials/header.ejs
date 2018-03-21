@@ -14,9 +14,10 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Camper</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="true" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-        <div class="navbarMenu">
 
-          <div class="navbar-collapse text-center justify-content-end collapse show" id="navbar2SupportedContent" style="">
+
+        <div class="navbar-collapse text-center justify-content-end collapse show" id="navbar2SupportedContent" style="">
+          <div class="navbarMenu">
             <% if (!loggedUser) { %>
               <a href="/camper/new" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Register
               <br>
@@ -24,23 +25,20 @@
               <a href="/login" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Login
               <br>
               </a>
-            <% } else { %>
-              <a href="/logout" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Logout
+              <% } else { %>
+                <div class="username">
+                  <a href="#" style="color: white;">Signed in as <%= loggedUser.username %></a>
+                </div>
+                <a href="/logout" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Logout
               <br>
               </a>
-            <% } %>
-            <a class="btn btn-default navbar-btn" href="/camper" style="color: white;">Our Camper&nbsp;<span class="badge badge-pill badge-light w-50 mx-0 camper">4</span></a>
+                <% } %>
+                  <a class="btn btn-default navbar-btn" href="/camper" style="color: white;">Our Camper&nbsp;<span class="badge badge-pill badge-light w-50 mx-0 camper"><%= camperCounterHTML %></span></a>
           </div>
         </div>
       </div>
     </nav>
 
     <script type="text/javascript">
-      const camperTotal = document.querySelector('.camper');
-      const navbarMenu = document.querySelector('.navbarMenu');
-        let total = <%-JSON.stringify(camperCounterHTML) %>;
-        camperTotal.innerHTML = total;
-        if (loggedUser) {
 
-        }
     </script>
