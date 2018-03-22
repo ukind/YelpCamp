@@ -19,7 +19,7 @@
     const comments = document.querySelector('.comments');
     const buttonComment = document.querySelector('.addComment');
     const camperID = <%-JSON.stringify(camperIDHtml) %>;
-    console.log(camperID);
+    console.log(camperID.comments.length);
     const firstName = camperID.name.first.charAt(0).toUpperCase() + camperID.name.first.slice(1);
     const lastName = camperID.name.last.charAt(0).toUpperCase() + camperID.name.last.slice(1);
 
@@ -99,7 +99,7 @@
             <h3 class="">${elemen.text}</h3>
           </div>
           <div class="col-md-12 comment-author">
-            <p class="text-right text-uppercase"> - ${elemen.author}</p>
+            <p class="text-right text-uppercase"> - ${elemen.author.username}</p>
           </div>
         </div>
       `;
