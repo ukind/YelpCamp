@@ -1,7 +1,11 @@
+// const CommentsDatabaseInterface = require('./comments');
 const mongoose = require('mongoose');
-const CommentsDatabaseInterface = require('./comments');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const camperSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  roles: String,
   name: {first: String, last: String},
   picture: {large: String},
   gender: String,
@@ -20,6 +24,9 @@ const camperSchema = new mongoose.Schema({
     }
   ]
 });
+
+
+camperSchema.plugin(passportLocalMongoose);
 
 const camperDatabase = mongoose.model('camper', camperSchema);
 module.exports = camperDatabase;
