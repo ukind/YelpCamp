@@ -3,7 +3,8 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 const camperLogin = new mongoose.Schema({
   username: String,
-  password: String
+  password: String,
+  roles: String
 });
 
 camperLogin.plugin(passportLocalMongoose);
