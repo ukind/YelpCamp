@@ -5,21 +5,26 @@
       </div>
 
 
-    <div class="col-md-3 menu"></div>
+      <div class="col-md-3 menu"></div>
     </div>
     <div class="addComment"></div>
     <div class="comments"></div>
+    <div class="test">
 
+    </div>
   </div>
 
   <script type="text/javascript">
     const bioData = document.querySelector('.biodata')
     const menu = document.querySelector('.menu');
+
     const selectedProfil = document.querySelector('.selectedProfil');
     const comments = document.querySelector('.comments');
     const buttonComment = document.querySelector('.addComment');
     const camperID = <%-JSON.stringify(camperIDHtml) %>;
-    console.log(camperID.comments.length);
+    const loggedUser = <%-JSON.stringify(loggedUser) %>;
+    console.log(camperID);
+
     const firstName = camperID.name.first.charAt(0).toUpperCase() + camperID.name.first.slice(1);
     const lastName = camperID.name.last.charAt(0).toUpperCase() + camperID.name.last.slice(1);
 
@@ -27,37 +32,52 @@
     selectedProfil.innerHTML +=
       `
       <div class="row d-flex justify-content-center">
-      <div class="col-md-5 col-7 col-lg-6 d-flex flex-column align-items-center align-self-center justify-content-center">
-        <img class="img-fluid d-block" src="${camperID.picture.large}">
+        <div class="col-md-5 col-7 col-lg-6 d-flex flex-column align-items-center align-self-center justify-content-center">
+          <img class="img-fluid d-block" src="${camperID.picture.large}">
+        </div>
+        <div class="camper-data col-md-4 col-4 d-flex flex-column justify-content-center col-lg-5 align-self-center align-items-start">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="">${firstName} ${lastName}</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="lead">Email: ${camperID.email || 'Not Available'}
+                <br>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="lead">Gender: ${gender || 'Not Available'}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="lead">Location</p>
+            </div>
+          </div>
+          <div class="camper-menu-button">
+
+          </div>
+        </div>
       </div>
-      <div class="col-md-4 col-4 d-flex flex-column justify-content-center col-lg-5 align-self-center align-items-start">
-        <div class="row">
-          <div class="col-md-12">
-            <h2 class="">${firstName} ${lastName}</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <p class="lead">${camperID.email || 'Not Available'}
-              <br>
-            </p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <p class="lead">${gender || 'Not Available'}</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <p class="lead">Location</p>
-          </div>
-        </div>
-      </div>
-    </div>
     `;
-
-
+    const camperMenuButton = document.querySelector('.camper-menu-button');
+    // console.log(loggedUser)
+    if (loggedUser.name.first === camperID.name.first) {
+      camperMenuButton.innerHTML += `
+      <div class="camper-button-menu">
+        <form action="./edit/${camperID._id}" method="put">
+          <button class="btn btn-primary" role="button">Edit</button>
+        </form>
+        <form action="./delete/${camperID._id}" method="delete">
+          <button class="btn btn-danger" role="button">Delete</button>
+        </form>
+      </div>
+      `;
+    }
 
 
     menu.innerHTML =
@@ -79,11 +99,13 @@
 
     `;
 
-    selectedProfil.innerHTML += `
+    selectedProfil.innerHTML +=
+      `
     <p class="biodata">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     `;
 
-    selectedProfil.innerHTML += `
+    selectedProfil.innerHTML +=
+      `
       <div class="row mx-auto w-100 comment-button">
         <div class="text-right col-md-12">
           <a class="btn btn-primary" href="./${camperID._id}/comments/new/">Add comments...</a>
@@ -99,12 +121,11 @@
             <h3 class="">${elemen.text}</h3>
           </div>
           <div class="col-md-12 comment-author">
-            <p class="text-right text-uppercase"> - ${elemen.author.username}</p>
+            <p class="text-right text-uppercase"> - ${elemen.author.first}</p>
           </div>
         </div>
       `;
     });
-
   </script>
 
   <% include ../partials/footer %>
