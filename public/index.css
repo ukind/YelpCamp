@@ -1,8 +1,97 @@
-.camperUser{
+.camperUser {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.camper-button-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: inherit;
+}
+
+.camper-button-menu>* {
+  margin: 1vh;
+}
+
+.login-nav .username{
+  margin-right: auto;
+}
+
+.login-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.profilName {
+  text-align: center;
+}
+
+.form-register-camper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.form-register-camper>* {
+  margin: 2vh;
+}
+
+footer {
+  margin-top: 20vh;
+  bottom: 0;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.addComment {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  margin-bottom: 10vw;
+}
+
+.showContainer {
+  margin-top: 3vw;
+}
+
+.menu {
+  margin-bottom: 5vh;
+}
+
+.biodata {
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
+
+.comment-button {
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
+
+.formRegister {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 5vh;
+}
+
+.camperContainer {
+  min-height: 15vh;
 }

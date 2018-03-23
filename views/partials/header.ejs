@@ -1,9 +1,69 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8">
     <title>Camper</title>
-    <link rel="stylesheet" href="vendor/bootstrap.css">
-    <link rel="stylesheet" href="user/index.css">
+    <link rel="stylesheet" href="/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/user/bootstrap-theme.css">
+    <link rel="stylesheet" href="/user/index.css">
   </head>
+
   <body>
+
+    <nav class="navbar navbar-expand-md bg-primary navbar-dark sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Camper</a>
+        <button style="margin-bottom: 2vh;"class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="true" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+        <div class="navbar-collapse text-center justify-content-end collapse show" id="navbar2SupportedContent" style="">
+          <% if (!loggedAdmin && !loggedUser) { %>
+              <div class="login-nav">
+                <a class="btn btn-default navbar-btn" href="/camper" style="color: white;">Our Camper&nbsp;<span class="badge badge-pill badge-light w-40 mx-0 camper"><%= camperCounterHTML %></span></a>
+                <a href="/camper/new" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Register
+                <br>
+                </a>
+                <a href="/login" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Login
+                <br>
+                </a>
+              </div>
+              <% } else if (loggedAdmin) { %>
+                <div class="login-nav">
+                  <div class="username">
+                    <a href="#" style="color: white;">Signed in as <%= loggedAdmin.username %></a>
+                  </div>
+                  <div class="camper-member" style="width: 30vh;">
+                    <a class="btn btn-default navbar-btn" href="/camper" style="color: white;">Our Camper&nbsp;<span class="badge badge-pill badge-light w-50 mx-0 camper"><%= camperCounterHTML %></span></a>
+                  </div>
+                  <div class="logout-button">
+                    <a href="/admin/logout" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Logout
+                  <br>
+                  </a>
+                  </div>
+                </div>
+                <% } else if (loggedUser) { %>
+                  <div class="login-nav">
+                    <div class="username">
+                      <a href="#" style="color: white;">Signed in as <%= loggedUser.username %></a>
+                    </div>
+                    <div class="camper-member" style="width: 30vh;">
+                      <a class="btn btn-default navbar-btn" href="/camper" style="color: white;">Our Camper&nbsp;<span class="badge badge-pill badge-light w-50 mx-0 camper"><%= camperCounterHTML %></span></a>
+                    </div>
+                    <div class="logout-button">
+                      <a href="/logout" class="btn navbar-btn ml-2 btn-secondary"><i class="fa d-inline fa-lg fa-user-circle-o"></i>Logout
+                    <br>
+                    </a>
+                    </div>
+                  </div>
+                  <% } %>
+
+        </div>
+      </div>
+    </nav>
+
+    <script type="text/javascript">
+      const loginStatus = <%-JSON.stringify(loggedAdmin) %>
+      console.log(loginStatus);
+      const loginStatusu = <%-JSON.stringify(loggedUser) %>
+      console.log(loginStatusu);
+
+    </script>

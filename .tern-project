@@ -5,15 +5,15 @@
   ],
   "loadEagerly": [],
   "dontLoad": [
-    "node_modules/**"
+    ""
   ],
   "plugins": {
+    "commonjs": {},
     "requirejs": {
       "baseURL": "",
       "paths": "",
       "override": ""
     },
-    "commonjs": {},
     "modules": {
       "dontLoad": "",
       "load": "",

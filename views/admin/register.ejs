@@ -1,0 +1,25 @@
+<% include ../partials/header %>
+  <div class="container">
+
+    <div class="row formRegister">
+      <div class="col-md-6">
+        <h1><center>
+          Register for Admin
+        </center></h1>
+        <form action="/admin" method="post">
+          <fieldset class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="Password" placeholder="Password" name="password">
+          </fieldset>
+          <button type="submit" class="btn btn-primary" style="float: right; margin-top: 2vh">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <% include ../partials/footer %>
