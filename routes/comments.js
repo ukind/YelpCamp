@@ -31,6 +31,7 @@ router.post('/camper/:id/comment', isLoggedIn, (req, res) => {
       // masuk ke comment with reference to camperlogin
       comment.author.id = req.user._id;
       comment.author.username = req.user.username;
+      comment.author.first = req.user.name.first;
       comment.save();
       camper.comments.push(comment);
       camper.save();
@@ -41,6 +42,9 @@ router.post('/camper/:id/comment', isLoggedIn, (req, res) => {
 
 // FUNCION: detect session
 function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated() && req.user.roles === 'Admin') {
+    res.redirect('/login');
+  }
   if (req.isAuthenticated()) {
     return next();
   }
