@@ -1,0 +1,43 @@
+<% include ../partials/header %>
+  <div class="container">
+
+    <div class="row formRegister">
+      <div class="col-md-6">
+        <h1><center>
+          Edit data
+        </center></h1>
+        <form action="/camper/edit/<%= loggedUser._id %>?_method=PUT" method="post">
+          <div class="form-register-camper">
+            <fieldset class="form-group">
+              <label for="Username">Username</label>
+              <input type="text" class="form-control" id="username" placeholder="Username" name="edit[username]" value="<%= loggedUser.username %>">
+            </fieldset>
+            <fieldset class="form-group">
+              <label for="Password">Password</label>
+              <input type="password" class="form-control" id="Password" placeholder="Password" name="edit[password]">
+            </fieldset>
+            <fieldset class="form-group">
+              <label for="FirstName">First Name</label>
+              <input type="text" class="form-control" id="FirstName" placeholder="First Name" name="edit[firstName]" value="<%= loggedUser.name.first %>">
+            </fieldset>
+            <fieldset class="form-group">
+              <label for="LastName">Last Name</label>
+              <input type="text" class="form-control" id="LastName" placeholder="Last Name" name="edit[lastName]" value="<%= loggedUser.name.last %>">
+            </fieldset>
+            <fieldset class="form-group">
+              <label for="LastName">Image URL</label>
+              <input type="text" class="form-control" id="LastName" placeholder="http://a.jpg" name="edit[imageURL]" value="<%= loggedUser.picture.large %>">
+            </fieldset>
+          </div>
+          <button type="submit" class="btn btn-primary" style="float: right; margin-top: 2vh">Edit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  const camperID = <%-JSON.stringify(loggedUser) %>;
+  console.log(camperID);
+</script>
+
+  <% include ../partials/footer %>

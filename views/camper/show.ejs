@@ -23,7 +23,7 @@
     const buttonComment = document.querySelector('.addComment');
     const camperID = <%-JSON.stringify(camperIDHtml) %>;
     const loggedUser = <%-JSON.stringify(loggedUser) %>;
-    console.log(camperID);
+    // console.log(camperID);
 
     const firstName = camperID.name.first.charAt(0).toUpperCase() + camperID.name.first.slice(1);
     const lastName = camperID.name.last.charAt(0).toUpperCase() + camperID.name.last.slice(1);
@@ -64,21 +64,6 @@
         </div>
       </div>
     `;
-    const camperMenuButton = document.querySelector('.camper-menu-button');
-    // console.log(loggedUser)
-    if (loggedUser.name.first === camperID.name.first) {
-      camperMenuButton.innerHTML += `
-      <div class="camper-button-menu">
-        <form action="./edit/${camperID._id}" method="put">
-          <button class="btn btn-primary" role="button">Edit</button>
-        </form>
-        <form action="./delete/${camperID._id}" method="delete">
-          <button class="btn btn-danger" role="button">Delete</button>
-        </form>
-      </div>
-      `;
-    }
-
 
     menu.innerHTML =
       `
@@ -96,7 +81,6 @@
         <span class="badge badge-primary badge-pill">1</span>
       </li>
     </ul>
-
     `;
 
     selectedProfil.innerHTML +=
@@ -126,6 +110,21 @@
         </div>
       `;
     });
+
+    const camperMenuButton = document.querySelector('.camper-menu-button');
+    // console.log(loggedUser)
+    if (loggedUser._id === camperID._id) {
+      camperMenuButton.innerHTML += `
+      <div class="camper-button-menu">
+        <form action="./edit/${camperID._id}" method="post">
+          <button class="btn btn-primary" role="button">Edit</button>
+        </form>
+        <form action="./delete/${camperID._id}?_method=delete" method="post">
+          <button class="btn btn-danger" role="button">Delete</button>
+        </form>
+      </div>
+      `;
+    }
   </script>
 
   <% include ../partials/footer %>

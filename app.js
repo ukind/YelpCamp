@@ -70,10 +70,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-
+// DETECT SESSION ACCOUNT TYPE
 app.use(function(req, res, next) {
-  console.log('=======================================FROM APP.JS ==============================');
-  console.log(req.user);
+    console.log(req.user);
     if (typeof req.user == 'undefined') {
       res.locals.loggedUser = null;
       res.locals.loggedAdmin = null;
@@ -135,7 +134,6 @@ app.get('/camper/:id', function(req, res) {
 //     });
 //   });
 // });
-
 
 // USE SPLITTED ROUTER
 
