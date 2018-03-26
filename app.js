@@ -70,9 +70,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-
+// DETECT SESSION ACCOUNT TYPE
 app.use(function(req, res, next) {
-  console.log(req.user);
+    console.log(req.user);
     if (typeof req.user == 'undefined') {
       res.locals.loggedUser = null;
       res.locals.loggedAdmin = null;
@@ -100,7 +100,7 @@ app.get('/', (req, res) => {
 app.get('/camper/new', function(req, res) {
 
   res.render('./camper/new', {camperCounterHTML: sumCamper});
-}); 
+});
 
 // ROUTE: GET CAMPER DETAIL
 app.get('/camper/:id', function(req, res) {
@@ -134,7 +134,6 @@ app.get('/camper/:id', function(req, res) {
 //     });
 //   });
 // });
-
 
 // USE SPLITTED ROUTER
 
