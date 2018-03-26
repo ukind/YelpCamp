@@ -106,6 +106,16 @@ router.put('/camper/edit/:id', isLoggedIn, (req, res) => {
   });
 });
 
+router.delete('/camper/delete/:id', (req, res) => {
+  const camperID = req.params.id;
+  CamperInterface.findByIdAndRemove(camperID, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    res.redirect('/camper');
+  });
+});
+
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();

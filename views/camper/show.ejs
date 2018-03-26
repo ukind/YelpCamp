@@ -65,8 +65,6 @@
       </div>
     `;
 
-
-
     menu.innerHTML =
       `
     <ul class="list-group">
@@ -83,7 +81,6 @@
         <span class="badge badge-primary badge-pill">1</span>
       </li>
     </ul>
-
     `;
 
     selectedProfil.innerHTML +=
@@ -119,10 +116,10 @@
     if (loggedUser._id === camperID._id) {
       camperMenuButton.innerHTML += `
       <div class="camper-button-menu">
-        <form action="./edit/${camperID._id}" method="put">
+        <form action="./edit/${camperID._id}" method="post">
           <button class="btn btn-primary" role="button">Edit</button>
         </form>
-        <form action="./delete/${camperID._id}" method="delete">
+        <form action="./delete/${camperID._id}?_method=delete" method="post">
           <button class="btn btn-danger" role="button">Delete</button>
         </form>
       </div>
