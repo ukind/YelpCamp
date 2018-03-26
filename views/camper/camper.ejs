@@ -29,9 +29,9 @@
             </div>
           <% if (loggedAdmin) { %>
             <div class="admin-menu-button">
-            <form action="./delete/<%= element._id %>" method="delete">
+            <form action="/delete/<%= element._id %>?_method=delete" method="post">
             <button class="btn btn-danger" role="button">Delete</button>
-      
+
             </form>
             </div>
           <% } %>
