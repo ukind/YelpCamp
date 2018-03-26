@@ -106,6 +106,7 @@ router.put('/camper/edit/:id', isLoggedIn, (req, res) => {
   });
 });
 
+// DELETE CAMPER BY CAMPER ITSELF
 router.delete('/camper/delete/:id', (req, res) => {
   const camperID = req.params.id;
   CamperInterface.findByIdAndRemove(camperID, (error) => {
@@ -116,6 +117,7 @@ router.delete('/camper/delete/:id', (req, res) => {
   });
 });
 
+// SESSION DETECTION
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
