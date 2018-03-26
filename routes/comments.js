@@ -43,11 +43,12 @@ router.post('/camper/:id/comment', isLoggedIn, (req, res) => {
 // FUNCION: detect session
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated() && req.user.roles === 'Admin') {
-    res.redirect('/login');
+    return res.redirect('/login');
   }
   if (req.isAuthenticated()) {
     return next();
   }
+  req.flash('error', 'Please Login First!');
   res.redirect('/login');
 }
 
