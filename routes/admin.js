@@ -26,9 +26,9 @@ router.post('/admin', function(req, res) {
   });
 });
 
-// LOGIN ADMIN
+// DELETE CAMPER BY ADMIN
 
-router.get('/delete/:id', function(req, res) {
+router.delete('/delete/:id', function(req, res) {
   const camperID = req.params.id;
   camperCollection.findByIdAndRemove(camperID, (error) => {
     if (error) {
