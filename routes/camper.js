@@ -1,16 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const passport      = require('passport');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
 const CamperInterface = require('../models/camperDatabaseInterface');
 
+router.use(bodyParser.urlencoded({extended: true}));
+router.use(methodOverride('_method'));
 
 // ROUTE: CAMPER
 router.get('/camper',  function(req, res) {
   // GetCamperFromDatabaseJSON();
   // SeedDB.removeAllCamper();
   // SeedDB.camperCreator();
-  console.log(req.user);
+  // console.log(req.user);
   CamperInterface.count({}, function(error, count) {
     if (count >= 0) {
       CamperInterface.find({}, function(error, data) {
@@ -49,12 +53,64 @@ router.post('/camper', function(req, res) {
       console.log(error);
       return res.render('./camper/register');
     }
-    console.log('=======================================FROM CAMPER.JS ==============================');
     passport.authenticate('camper')(req, res, () => {
       // console.log(res);
       res.redirect('/camper');
     });
   });
 });
+
+// EDIT CAMPER ACCOUNT
+
+router.get('/camper/edit/:id', isLoggedIn, (req, res) => {
+  CamperInterface.findById(req.params.id, (err, found) => {
+    if (err) {
+      console.log(err);
+    }
+    res.render('./camper/edit');
+  });
+});
+
+router.put('/camper/edit/:id', isLoggedIn, (req, res) => {
+  const id = req.params.id;
+  const password = req.body.edit.password;
+  CamperInterface.findByIdAndUpdate(id, {
+    name: {
+      first: req.body.edit.firstName,
+      last: req.body.edit.lastName
+    },
+    picture: {
+      large: req.body.edit.imageURL
+    },
+    username: req.body.edit.username
+  }, (error, resultEdit) => {
+    if (error) {
+      console.log(error);
+    } else {
+      // FUNCITON: TO EDIT PASSWORD HASH
+      CamperInterface.findById(id).then(function(result) {
+        if (result) {
+          result.setPassword(password, function() {
+            result.save();
+            // FUNCTION: SEND UPDATED SESSION AFTER CHANGE USERNAME ETC
+            req.login(result, function(error) {
+              if (error) {
+                return next(error);
+              }
+              return res.redirect('/camper/' + id);
+            });
+          });
+        }
+      });
+    }
+  });
+});
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
 
 module.exports = router;
