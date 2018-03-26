@@ -72,7 +72,6 @@ app.use(function(req, res, next) {
 
 
 app.use(function(req, res, next) {
-  console.log('=======================================FROM APP.JS ==============================');
   console.log(req.user);
     if (typeof req.user == 'undefined') {
       res.locals.loggedUser = null;
@@ -101,7 +100,7 @@ app.get('/', (req, res) => {
 app.get('/camper/new', function(req, res) {
 
   res.render('./camper/new', {camperCounterHTML: sumCamper});
-});
+}); 
 
 // ROUTE: GET CAMPER DETAIL
 app.get('/camper/:id', function(req, res) {
