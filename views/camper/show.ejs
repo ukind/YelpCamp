@@ -116,7 +116,7 @@
     if (loggedUser._id === camperID._id) {
       camperMenuButton.innerHTML += `
       <div class="camper-button-menu">
-        <form action="./edit/${camperID._id}" method="post">
+        <form action="./edit/${camperID._id}" method="get">
           <button class="btn btn-primary" role="button">Edit</button>
         </form>
         <form action="./delete/${camperID._id}?_method=delete" method="post">
