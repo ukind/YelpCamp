@@ -34,10 +34,10 @@ app.use(flash());
 app.set('view engine', 'ejs');
 
 // LOCAL VERSION
-// mongoose.connect('mongodb://localhost/yelpcamp');
+mongoose.connect('mongodb://ukind:kagekuman@ds046047.mlab.com:46047/yelpcamp');
 
 // CLOUD VERSION
-mongoose.connect('mongodb://ukind:ukind.mlab.com:46047/yelpcamp');
+// mongoose.connect('mongodb://ukind:ukind@ds046047.mlab.com:46047/yelpcamp');
 
 // AUTHENTIFICATION function FOR ADMIN AND CAMPER
 app.use(require('express-session')({
