@@ -117,13 +117,13 @@ app.use(authRoutes);
 app.use(adminRoutes);
 
 // HEROKU VERSION
-// app.listen(process.env.PORT, process.env.IP, function() {
-//   console.log('server started');
-// });
-
-// LOCAL VERSION
-app.listen(12345, '127.0.0.1', () => {
-  // clearing console
-  console.log('\x1Bc');
+app.listen(process.env.PORT, process.env.IP, function() {
   console.log('server started');
 });
+
+// LOCAL VERSION
+// app.listen(12345, '127.0.0.1', () => {
+//   // clearing console
+//   console.log('\x1Bc');
+//   console.log('server started');
+// });
