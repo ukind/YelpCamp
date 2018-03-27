@@ -32,7 +32,12 @@ app.use('/vendor', express.static(__dirname + bootstrapJS));
 app.use('/vendor', express.static(__dirname + bootstrapCSS));
 app.use(flash());
 app.set('view engine', 'ejs');
-mongoose.connect('mongodb://localhost/yelpcamp');
+
+// LOCAL VERSION
+// mongoose.connect('mongodb://localhost/yelpcamp');
+
+// CLOUD VERSION
+mongoose.connect('mongodb://ukind:ukind.mlab.com:46047/yelpcamp');
 
 // AUTHENTIFICATION function FOR ADMIN AND CAMPER
 app.use(require('express-session')({
