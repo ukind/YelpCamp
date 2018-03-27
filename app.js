@@ -111,8 +111,14 @@ app.use(camperRoutes);
 app.use(authRoutes);
 app.use(adminRoutes);
 
-app.listen(12345, '127.0.0.1', () => {
-  // clearing console
-  console.log('\x1Bc');
+// HEROKU VERSION
+app.listen(process.env.PORT, process.env.IP, function() {
   console.log('server started');
 });
+
+// LOCAL VERSION
+// app.listen(12345, '127.0.0.1', () => {
+//   // clearing console
+//   console.log('\x1Bc');
+//   console.log('server started');
+// });
