@@ -34,10 +34,10 @@ app.use(flash());
 app.set('view engine', 'ejs');
 
 // LOCAL VERSION
-// mongoose.connect('mongodb://localhost/yelpcamp');
+mongoose.connect('mongodb://ukind:kagekuman@ds046047.mlab.com:46047/yelpcamp');
 
 // CLOUD VERSION
-mongoose.connect('mongodb://ukind:ukind.mlab.com:46047/yelpcamp');
+// mongoose.connect('mongodb://ukind:ukind@ds046047.mlab.com:46047/yelpcamp');
 
 // AUTHENTIFICATION function FOR ADMIN AND CAMPER
 app.use(require('express-session')({
@@ -117,13 +117,13 @@ app.use(authRoutes);
 app.use(adminRoutes);
 
 // HEROKU VERSION
-app.listen(process.env.PORT, process.env.IP, function() {
-  console.log('server started');
-});
-
-// LOCAL VERSION
-// app.listen(12345, '127.0.0.1', () => {
-//   // clearing console
-//   console.log('\x1Bc');
+// app.listen(process.env.PORT, process.env.IP, function() {
 //   console.log('server started');
 // });
+
+// LOCAL VERSION
+app.listen(12345, '127.0.0.1', () => {
+  // clearing console
+  console.log('\x1Bc');
+  console.log('server started');
+});
