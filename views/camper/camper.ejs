@@ -1,6 +1,6 @@
 <% include ../partials/header %>
   <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron" style="margin-top: 3vh;">
       <div class="container">
         <h1>Our Camper</h1>
         <p>This is our camping squad!</p>
@@ -9,45 +9,36 @@
       </div>
     </div>
     <div class="camperContainer row">
-
-
-            <% camperHTML.forEach((element, index) => { %>
-            <%  const firstName = element.name.first.charAt(0).toUpperCase() + element.name.first.slice(1); %>
-            <%  const lastName = element.name.last.charAt(0).toUpperCase() + element.name.last.slice(1); %>
+      <% camperHTML.forEach((element, index) => { %>
+        <%  const firstName = element.name.first.charAt(0).toUpperCase() + element.name.first.slice(1); %>
+          <%  const lastName = element.name.last.charAt(0).toUpperCase() + element.name.last.slice(1); %>
             <div class="col-md-4 col-sm-4">
               <div class="camperUser">
 
-            <figure class="figure">
-            <img src="<%= element.picture.large %>" class="figure-img img-fluid rounded">
-            <figcaption class="figure-caption text-center">
-              <a href="/camper/<%= element._id %>">
+                <figure class="figure">
+                  <img src="<%= element.picture.large %>" class="figure-img img-fluid rounded">
+                  <figcaption class="figure-caption text-center">
+                    <a href="/camper/<%= element._id %>">
             <span class="firstName"><%= firstName %></span>
             <span class="lastName"><%= lastName %></span>
             </a>
-            </figcaption>
-            </figure>
+                  </figcaption>
+                </figure>
+              </div>
+              <% if (loggedAdmin) { %>
+                <div class="admin-menu-button">
+                  <form action="/delete/<%= element._id %>?_method=delete" method="post">
+                    <button class="btn btn-danger" role="button">Delete</button>
+
+                  </form>
+                </div>
+                <% } %>
             </div>
-          <% if (loggedAdmin) { %>
-            <div class="admin-menu-button">
-            <form action="./delete/<%= element._id %>" method="delete">
-            <button class="btn btn-danger" role="button">Delete</button>
-      
-            </form>
-            </div>
-          <% } %>
-          </div>
 
             <% }) %>
-
-
-
     </div>
   </div>
-
   <script type="text/javascript">
-
-
-
   </script>
 
   <script type="text/javascript" src="user/index.js">

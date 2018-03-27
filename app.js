@@ -4,7 +4,7 @@ const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
 const passport      = require('passport');
 const localStrategy = require('passport-local').Strategy;
-
+const flash         = require('connect-flash');
 
 // CUSTOM REQUIRE
 
@@ -30,6 +30,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/user', express.static(__dirname + '/public'));
 app.use('/vendor', express.static(__dirname + bootstrapJS));
 app.use('/vendor', express.static(__dirname + bootstrapCSS));
+app.use(flash());
 app.set('view engine', 'ejs');
 mongoose.connect('mongodb://localhost/yelpcamp');
 
@@ -67,12 +68,14 @@ function calculateCamper() {
 app.use(function(req, res, next) {
   calculateCamper();
   res.locals.camperCounterHTML = sumCamper;
+  res.locals.messageError = req.flash('error');
+  res.locals.messageSuccess = req.flash('success');
   next();
 });
 
 // DETECT SESSION ACCOUNT TYPE
 app.use(function(req, res, next) {
-    console.log(req.user);
+    // console.log(req.user);
     if (typeof req.user == 'undefined') {
       res.locals.loggedUser = null;
       res.locals.loggedAdmin = null;
@@ -93,57 +96,29 @@ app.use(function(req, res, next) {
 // ROUTES
 
 app.get('/', (req, res) => {
-  res.redirect('/camper');
+  res.render('./camper/landing');
+  // res.redirect('/camper');
 });
 
-// ROUTE: GET FORM
+// ROUTE: FORM FOR NEW CAMPER
 app.get('/camper/new', function(req, res) {
-
   res.render('./camper/new', {camperCounterHTML: sumCamper});
 });
 
-// ROUTE: GET CAMPER DETAIL
-app.get('/camper/:id', function(req, res) {
-  const camperId = req.params.id;
-  CamperInterface.findById(camperId)
-    .populate('comments') //joining data from comments collection
-    .exec(function(error, result) {
-      if (error) {
-        console.log(error);
-      }
-      res.render('./camper/show', {camperIDHtml: result});
-    });
-});
-
-// ROUTE: REGISTER
-// app.get('/register', (req, res) => {
-//   calculateCamper();
-//   res.render('./camper/register', {camperCounterHTML: sumCamper});
-// });
-//
-// app.post('/register', (req, res) => {
-//   const newUser = new camperCollection({username: req.body.username});
-//   const password = req.body.password;
-//   camperCollection.register(newUser, password, (error, user) => {
-//     if (error) {
-//       console.log(error);
-//       return res.render('./camper/register');
-//     }
-//     passport.authenticate('local')(req, res, () => {
-//       res.redirect('./camper');
-//     });
-//   });
-// });
-
 // USE SPLITTED ROUTER
-
 app.use(commentsRoutes);
 app.use(camperRoutes);
 app.use(authRoutes);
 app.use(adminRoutes);
 
-app.listen(12345, '127.0.0.1', () => {
-  // clearing console
-  console.log('\x1Bc');
+// HEROKU VERSION
+app.listen(process.env.PORT, process.env.IP, function() {
   console.log('server started');
 });
+
+// LOCAL VERSION
+// app.listen(12345, '127.0.0.1', () => {
+//   // clearing console
+//   console.log('\x1Bc');
+//   console.log('server started');
+// });

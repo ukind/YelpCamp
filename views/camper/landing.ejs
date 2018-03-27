@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Welcome!</title>
-  </head>
-  <body>
-    <h1>Welcome</h1>
-    <a href="/camper">View Camper</a>
-  </body>
-</html>
+    <head>
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="user/stylesheets/landing.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    </head>
+    <body>
+
+    <div class="container">
+        <% if(messageError && messageError.length > 0){ %>
+            <div class="alert alert-danger" role="alert">
+                <%= messageError %>
+            </div>
+        <% } %>
+        <% if(messageSuccess && messageSuccess.length > 0){ %>
+            <div class="alert alert-success" role="alert">
+                <%= messageSuccess %>
+            </div>
+        <% } %>
+    </div>
+
+    <div id="landing-header">
+ 		<h1>Welcome to YelpCamp!</h1>
+		<a href="/camper" class="btn btn-lg btn-success">View All Campgrounds</a>
+    </div>
+
+    <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
+<!-- <% include ../partials/footer %> -->

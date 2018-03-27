@@ -18,7 +18,6 @@ router.get('/camper',  function(req, res) {
   CamperInterface.count({}, function(error, count) {
     if (count >= 0) {
       CamperInterface.find({}, function(error, data) {
-
           res.render('./camper/camper', {camperHTML: data});
         });
     }
@@ -55,6 +54,7 @@ router.post('/camper', function(req, res) {
     }
     passport.authenticate('camper')(req, res, () => {
       // console.log(res);
+      req.flash('success', 'Camper: ' + newUser.name.first + ' Has been created');
       res.redirect('/camper');
     });
   });
@@ -106,6 +106,7 @@ router.put('/camper/edit/:id', isLoggedIn, (req, res) => {
   });
 });
 
+// DELETE CAMPER BY CAMPER ITSELF
 router.delete('/camper/delete/:id', (req, res) => {
   const camperID = req.params.id;
   CamperInterface.findByIdAndRemove(camperID, (error) => {
@@ -116,10 +117,25 @@ router.delete('/camper/delete/:id', (req, res) => {
   });
 });
 
+// ROUTE: GET CAMPER DETAIL
+router.get('/camper/:id', function(req, res) {
+  const camperId = req.params.id;
+  CamperInterface.findById(camperId)
+    .populate('comments') //joining data from comments collection
+    .exec(function(error, result) {
+      if (error) {
+        console.log(error);
+      }
+      res.render('./camper/show', {camperIDHtml: result});
+    });
+});
+
+// SESSION DETECTION
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
+  req.flash('error', 'Please Login First!');
   res.redirect('/login');
 }
 
